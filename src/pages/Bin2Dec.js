@@ -5,26 +5,28 @@ import {
     Text, 
     StyleSheet,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native'
 
 export default props => {
     const [result, setResult] = useState(0)
     const [binary, setBinary] = useState(0)
 
-    const Calculate = () => {
+    const Calculate = () => {      
         let aux = 0
         let aux1 = []
-
         let j = 0
 
-        for(let i = binary.length - 1; i >= 0 ; i--){
-            aux = binary[j] * Math.pow(2,i)
-            aux1.push(aux)
-            j = j + 1
+        if(binary == ''){
+            console.warn('digita ai')
+        } else {
+            for(let i = binary.length - 1; i >= 0 ; i--){
+                aux = binary[j] * Math.pow(2,i)
+                aux1.push(aux)
+                j = j + 1
+            }
+            setResult(aux1.reduce((total, num) => {return total + num}))
         }
-
-        setResult(aux1.reduce((total, num) => {return total + num}))
     }
 
     return (
@@ -39,7 +41,7 @@ export default props => {
             </View>
             <View style = {styles.form}>
                 <Text style = {styles.description}>
-                    Enter your binary number of up to 8 digits
+                    Enter your binary number of up to 8 digits {'\n'} without spaces
                 </Text>
                 <View style = {styles.separator}/>
                 <Text style = {styles.emoji}>
@@ -55,11 +57,6 @@ export default props => {
                     <TouchableOpacity onPress = {Calculate} style = {styles.button}>
                         <Text style = {styles.txtButton}>
                             Convert
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style = {styles.button}>
-                        <Text style = {styles.txtButton}>
-                            Reset
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -98,7 +95,8 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 15,
         color: 'dimgrey',
-        marginBottom: 30
+        marginBottom: 30,
+        textAlign: 'center'
     },
     button: {
         width: 120,
