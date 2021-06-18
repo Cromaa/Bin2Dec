@@ -15,3 +15,8 @@ I chose to do this project because of my degree in Computer Engineering so binar
 -   [x] User can enter a variable number of binary digits.
 
 I'm open for any suggestions 😀
+
+### App preview
+
+![Bin2Dec](https://user-images.githubusercontent.com/52571828/122615621-2e2b6b00-d05f-11eb-84b7-66ca202d8ba2.jpeg)
+
