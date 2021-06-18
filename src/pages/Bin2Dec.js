@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     SafeAreaView, 
     View, 
@@ -9,6 +9,24 @@ import {
 } from 'react-native'
 
 export default props => {
+    const [result, setResult] = useState(0)
+    const [binary, setBinary] = useState(0)
+
+    const Calculate = () => {
+        let aux = 0
+        let aux1 = []
+
+        let j = 0
+
+        for(let i = binary.length - 1; i >= 0 ; i--){
+            aux = binary[j] * Math.pow(2,i)
+            aux1.push(aux)
+            j = j + 1
+        }
+
+        setResult(aux1.reduce((total, num) => {return total + num}))
+    }
+
     return (
         <SafeAreaView style = {styles.container}>
             <View style = {styles.titleContainer}>
@@ -31,9 +49,10 @@ export default props => {
                     placeholder = 'Binary number here...' 
                     keyboardType = 'numeric' 
                     style = {styles.input}
+                    onChangeText = {x => setBinary(x)}
                 />
                 <View style = {styles.buttonContainer}>
-                    <TouchableOpacity style = {styles.button}>
+                    <TouchableOpacity onPress = {Calculate} style = {styles.button}>
                         <Text style = {styles.txtButton}>
                             Convert
                         </Text>
@@ -44,12 +63,11 @@ export default props => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <TextInput 
-                    placeholder = 'Decimal number here...'
-                    keyboardType = 'numeric'  
-                    style = {styles.input}
-                    editable = {false}
-                />
+                <View style = {styles.resultContainer}>
+                    <Text style = {styles.resultText}>
+                        {result}
+                    </Text>
+                </View>
             </View>
         </SafeAreaView>
     )
@@ -106,6 +124,7 @@ const styles = StyleSheet.create({
         marginVertical: 40,
         borderColor: 'slategray',
         width: 300, 
+        fontSize: 20
     },
     emoji: {
         fontSize: 25,
@@ -117,5 +136,18 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'grey',
         width: '80%',
+    },
+    resultContainer: {
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        width: '60%',
+        height: 120,
+        borderBottomWidth: 1,
+        borderColor: 'slategray',
+        marginVertical: 20,
+    },
+    resultText: {
+        fontSize: 55,
+        color: 'darkred'
     }
 })
