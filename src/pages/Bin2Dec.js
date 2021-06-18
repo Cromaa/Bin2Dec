@@ -6,20 +6,32 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
+    Keyboard,
+    TouchableWithoutFeedback
 } from 'react-native'
 
 export default props => {
     const [result, setResult] = useState(0)
     const [binary, setBinary] = useState(0)
+    const [reaction, setReaction] = useState('🤔')
+    const [warningMsg, setWarningMsg] = useState('')
 
-    const Calculate = () => {      
+    const Calculate = () => {     
         let aux = 0
         let aux1 = []
         let j = 0
 
         if(binary == ''){
-            console.warn('digita ai')
+            setWarningMsg('Please enter the number to convert')
+            setReaction('😥')
+            setResult(0)
+        } else if(binary.includes(2 || 3 || 4 || 5 || 6 || 7 || 8 || 9)){
+            setWarningMsg("A binary number can only contain 0's or 1's ")
+            setReaction('😮')
+            setResult(0)
         } else {
+            setWarningMsg('Congrats! Check the result down there')
+            setReaction('🥳')
             for(let i = binary.length - 1; i >= 0 ; i--){
                 aux = binary[j] * Math.pow(2,i)
                 aux1.push(aux)
@@ -31,41 +43,48 @@ export default props => {
 
     return (
         <SafeAreaView style = {styles.container}>
-            <View style = {styles.titleContainer}>
-                <Text style = {styles.title}>
-                    Binary to Decimal
-                </Text>
-                <Text style = {styles.subtitle}>
-                    Converter
-                </Text>
-            </View>
-            <View style = {styles.form}>
-                <Text style = {styles.description}>
-                    Enter your binary number of up to 8 digits {'\n'} without spaces
-                </Text>
-                <View style = {styles.separator}/>
-                <Text style = {styles.emoji}>
-                    🧐
-                </Text>
-                <TextInput 
-                    placeholder = 'Binary number here...' 
-                    keyboardType = 'numeric' 
-                    style = {styles.input}
-                    onChangeText = {x => setBinary(x)}
-                />
-                <View style = {styles.buttonContainer}>
-                    <TouchableOpacity onPress = {Calculate} style = {styles.button}>
-                        <Text style = {styles.txtButton}>
-                            Convert
+            <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
+                <View style = {styles.content}>
+                    <View style = {styles.titleContainer}>
+                        <Text style = {styles.title}>
+                            Binary to Decimal
                         </Text>
-                    </TouchableOpacity>
+                        <Text style = {styles.subtitle}>
+                            Converter
+                        </Text>
+                    </View>
+                    <View style = {styles.form}>
+                        <Text style = {styles.description}>
+                            Enter your binary number of up to 24 digits {'\n'} without spaces
+                        </Text>
+                        <View style = {styles.separator}/>
+                        <Text style = {styles.emoji}>
+                            {reaction}
+                        </Text>
+                        <Text style = {styles.warningMsg}>
+                            {warningMsg}
+                        </Text>
+                        <TextInput 
+                            placeholder = 'Binary number here...' 
+                            keyboardType = 'numeric' 
+                            style = {styles.input}
+                            onChangeText = {x => setBinary(x)}
+                        />
+                        <View style = {styles.buttonContainer}>
+                            <TouchableOpacity onPress = {Calculate} style = {styles.button}>
+                                <Text style = {styles.txtButton}>
+                                    Convert
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style = {styles.resultContainer}>
+                            <Text style = {styles.resultText}>
+                                {result}
+                            </Text>
+                        </View>
+                    </View>
                 </View>
-                <View style = {styles.resultContainer}>
-                    <Text style = {styles.resultText}>
-                        {result}
-                    </Text>
-                </View>
-            </View>
+            </TouchableWithoutFeedback>
         </SafeAreaView>
     )
 }
@@ -84,13 +103,13 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 45,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     subtitle: {
         fontSize: 30,
         textAlign: 'right',
         marginTop: -20,
-        marginBottom: 20
+        marginRight: 25
     },
     description: {
         fontSize: 15,
@@ -99,11 +118,11 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     button: {
-        width: 120,
+        width: 220,
         height: 50,
         borderRadius: 8,
         marginHorizontal: 5,
-        backgroundColor: 'slategray',
+        backgroundColor: '#00adef',
         justifyContent: 'center'
     }, 
     txtButton: {
@@ -138,7 +157,7 @@ const styles = StyleSheet.create({
     resultContainer: {
         justifyContent: 'flex-end',
         alignItems: 'center',
-        width: '60%',
+        width: 300,
         height: 120,
         borderBottomWidth: 1,
         borderColor: 'slategray',
@@ -147,5 +166,16 @@ const styles = StyleSheet.create({
     resultText: {
         fontSize: 55,
         color: 'darkred'
+    },
+    warningMsg: {
+        fontSize: 15,
+        color: 'darkred'
+    },
+    content: {
+        flex: 1,
+        width: '100%'
+    },
+    titleContainer: {
+        marginVertical: 35
     }
 })
